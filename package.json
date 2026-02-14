@@ -1,0 +1,25 @@
+{
+  "name": "dirac-mongodb",
+  "version": "0.1.0",
+  "description": "MongoDB integration library for DIRAC",
+  "main": "lib/index.di",
+  "files": [
+    "lib/"
+  ],
+  "keywords": [
+    "dirac",
+    "mongodb",
+    "database",
+    "nosql"
+  ],
+  "author": "Zhi Wang",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wangzhi63/diraclang.git",
+    "directory": "dirac-mongodb"
+  },
+  "peerDependencies": {
+    "mongodb": "^7.0.0"
+  }
+}
