@@ -16,6 +16,8 @@
 >
   <require_module name="mongodb" var="mongo" />
   
+  <defvar name="bodyText"><parameters select="*" /></defvar>
+  
   <eval name="result">
     const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
     const dbName = database || process.env.MONGODB_DATABASE;
@@ -24,9 +26,7 @@
       throw new Error('Database name required: set param-database or MONGODB_DATABASE env var');
     }
     
-    const params = getParams();
-    const bodyText = params && params.text ? params.text.trim() : '';
-    const queryObj = bodyText ? JSON.parse(bodyText) : {};
+    const queryObj = bodyText.trim() ? JSON.parse(bodyText) : {};
     const sortObj = sort ? JSON.parse(sort) : undefined;
     const limitNum = limit ? parseInt(limit, 10) : undefined;
     
@@ -59,6 +59,8 @@
 >
   <require_module name="mongodb" var="mongo" />
   
+  <defvar name="bodyText"><parameters select="*" /></defvar>
+  
   <eval name="result">
     const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
     const dbName = database || process.env.MONGODB_DATABASE;
@@ -67,9 +69,7 @@
       throw new Error('Database name required: set param-database or MONGODB_DATABASE env var');
     }
     
-    const params = getParams();
-    const bodyText = params && params.text ? params.text.trim() : '';
-    if (!bodyText) {
+    if (!bodyText.trim()) {
       throw new Error('Document body required for INSERT_ONE');
     }
     
@@ -102,6 +102,8 @@
 >
   <require_module name="mongodb" var="mongo" />
   
+  <defvar name="bodyText"><parameters select="*" /></defvar>
+  
   <eval name="result">
     const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
     const dbName = database || process.env.MONGODB_DATABASE;
@@ -110,9 +112,7 @@
       throw new Error('Database name required: set param-database or MONGODB_DATABASE env var');
     }
     
-    const params = getParams();
-    const bodyText = params && params.text ? params.text.trim() : '';
-    if (!bodyText) {
+    if (!bodyText.trim()) {
       throw new Error('Documents array required for INSERT_MANY');
     }
     
@@ -152,6 +152,8 @@
 >
   <require_module name="mongodb" var="mongo" />
   
+  <defvar name="bodyText"><parameters select="*" /></defvar>
+  
   <eval name="result">
     const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
     const dbName = database || process.env.MONGODB_DATABASE;
@@ -162,9 +164,7 @@
     
     const filterObj = JSON.parse(filter);
     
-    const params = getParams();
-    const bodyText = params && params.text ? params.text.trim() : '';
-    if (!bodyText) {
+    if (!bodyText.trim()) {
       throw new Error('Update operations body required for UPDATE_ONE');
     }
     
@@ -202,6 +202,8 @@
 >
   <require_module name="mongodb" var="mongo" />
   
+  <defvar name="bodyText"><parameters select="*" /></defvar>
+  
   <eval name="result">
     const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
     const dbName = database || process.env.MONGODB_DATABASE;
@@ -212,9 +214,7 @@
     
     const filterObj = JSON.parse(filter);
     
-    const params = getParams();
-    const bodyText = params && params.text ? params.text.trim() : '';
-    if (!bodyText) {
+    if (!bodyText.trim()) {
       throw new Error('Update operations body required for UPDATE_MANY');
     }
     
@@ -322,6 +322,8 @@
   meta-body="string:optional:JSON filter">
   <require_module name="mongodb" var="mongo" />
   
+  <defvar name="bodyText"><parameters select="*" /></defvar>
+  
   <eval name="result">
     const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
     const dbName = database || process.env.MONGODB_DATABASE;
@@ -330,9 +332,7 @@
       throw new Error('Database name required: set param-database or MONGODB_DATABASE env var');
     }
     
-    const params = getParams();
-    const bodyText = params && params.text ? params.text.trim() : '';
-    const filterObj = bodyText ? JSON.parse(bodyText) : {};
+    const queryObj = bodyText.trim() ? JSON.parse(bodyText) : {};
     const client = new mongo.MongoClient(uri);
     
     try {
@@ -340,7 +340,7 @@
       const db = client.db(dbName);
       const col = db.collection(collection);
       
-      const count = await col.countDocuments(filterObj);
+      const count = await col.countDocuments(queryObj);
       return count.toString();
     } finally {
       await client.close();
@@ -359,6 +359,8 @@
 >
   <require_module name="mongodb" var="mongo" />
   
+  <defvar name="bodyText"><parameters select="*" /></defvar>
+  
   <eval name="result">
     const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
     const dbName = database || process.env.MONGODB_DATABASE;
@@ -367,13 +369,11 @@
       throw new Error('Database name required: set param-database or MONGODB_DATABASE env var');
     }
     
-    const params = getParams();
-    const bodyText = params && params.text ? params.text.trim() : '';
-    if (!bodyText) {
+    if (!bodyText.trim()) {
       throw new Error('Pipeline array required for AGGREGATE');
     }
     
-    const pipelineArr = JSON.parse(bodyText);
+    const pipeline = JSON.parse(bodyText);
     if (!Array.isArray(pipelineArr)) {
       throw new Error('pipeline parameter must be a JSON array');
     }
